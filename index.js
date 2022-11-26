@@ -41,7 +41,7 @@ async function run(){
             const products= await productsCollection.find(query).toArray()
             res.send(products)
         })
-        app.get('/allsellers', async(req,res)=>{
+        app.get('/users', async(req,res)=>{
             const role= req.query.role
             const query= {
                 role: role
@@ -50,6 +50,12 @@ async function run(){
             res.send(sellers)
         })
 
+        app.delete('/users/:id', async(req,res)=>{
+            const id= req.params.id
+            const filter= {_id: ObjectId(id)}
+            const result = await usersCollection.deleteOne(filter)
+            res.send(result)
+        })
         app.delete('/myproducts/:id', async(req,res)=>{
             const id= req.params.id
             const filter= {_id: ObjectId(id)}
