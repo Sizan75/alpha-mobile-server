@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app=express()
 require('dotenv').config();
 const port = process.env.PORT || 5000
@@ -40,6 +40,21 @@ async function run(){
             }
             const products= await productsCollection.find(query).toArray()
             res.send(products)
+        })
+        app.get('/allsellers', async(req,res)=>{
+            const role= req.query.role
+            const query= {
+                role: role
+            }
+            const sellers= await usersCollection.find(query).toArray()
+            res.send(sellers)
+        })
+
+        app.delete('/myproducts/:id', async(req,res)=>{
+            const id= req.params.id
+            const filter= {_id: ObjectId(id)}
+            const result = await productsCollection.deleteOne(filter)
+            res.send(result)
         })
     }
     finally{
