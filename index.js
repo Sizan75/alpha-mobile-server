@@ -23,6 +23,15 @@ async function run(){
             const category=await categoryCollection.find(query).toArray()
             res.send(category)
         })
+
+        app.get('/category/:id', async(req,res)=>{
+            const id= req.params.id
+            const query={
+                categoryId: id
+            }
+            const result= await productsCollection.find(query).toArray()
+            res.send(result)
+        })
         app.post('/users', async(req,res)=>{
             const user=req.body
             const result= await usersCollection.insertOne(user)
