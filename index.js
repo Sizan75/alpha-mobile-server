@@ -30,6 +30,20 @@ async function run(){
             res.send(bookingProducts);
         })
 
+        app.put('/bookedProducts/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)}
+
+            const options = {upsert: true};
+            const updatedDoc = {
+                $set: {
+                   bookingstatus: 'booked'
+                }
+            }
+            const result = await productsCollection.updateOne(query, updatedDoc, options)
+            res.send(result);
+        })
+
         app.get('/category/:id', async(req,res)=>{
             const id= req.params.id
             const query={
