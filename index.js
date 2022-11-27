@@ -17,16 +17,21 @@ async function run(){
         const categoryCollection = client.db('alphaMobile').collection('mobileCategories')
         const usersCollection= client.db('alphaMobile').collection('users')
         const productsCollection= client.db('alphaMobile').collection('products')
+        const bookingsCollection= client.db('alphaMobile').collection('bookings')
         
         app.get('/category', async(req,res)=>{
             const query={}
             const category=await categoryCollection.find(query).toArray()
             res.send(category)
         })
+        app.post('/bookings', async(req, res) => {
+            const bookingInfo = req.body;
+            const bookingProducts = await bookingsCollection.insertOne(bookingInfo);
+            res.send(bookingProducts);
+        })
 
         app.get('/category/:id', async(req,res)=>{
             const id= req.params.id
-            console.log(id)
             const query={
                 categoryId: id
             }
