@@ -92,6 +92,16 @@ async function run(){
             res.send(result2);
         })
 
+        app.get('/advertise', async(req,res)=>{
+            const advertiseStatus= req.query.advertiseStatus
+            const query= {
+                advertiseStatus: advertiseStatus
+            }
+            const result= await productsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+
         app.put('/myproducts/:id', async (req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)}
