@@ -70,6 +70,15 @@ async function run(){
             const products= await productsCollection.find(query).toArray()
             res.send(products)
         })
+        app.get('/myorders', async(req,res)=>{
+            const email= req.query.email
+            console.log(email)
+            const query= {
+                userEmail: email
+            }
+            const orders= await bookingsCollection.find(query).toArray()
+            res.send(orders)
+        })
         app.get('/users', async(req,res)=>{
             const role= req.query.role
             const query= {
