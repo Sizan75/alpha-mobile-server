@@ -26,6 +26,7 @@ async function run(){
 
         app.get('/category/:id', async(req,res)=>{
             const id= req.params.id
+            console.log(id)
             const query={
                 categoryId: id
             }
@@ -69,15 +70,30 @@ async function run(){
             const email = req.params.email
             const query={ email}
             const user= await usersCollection.findOne(query)
-            res.send({isAdmin: user?.role === 'buyer'})
+            res.send({isBuyer: user?.role === 'buyer'})
         })
         app.get('/users/sellers/:email', async(req,res)=>{
             const email = req.params.email
             const query={ email}
             const user= await usersCollection.findOne(query)
-            res.send({isAdmin: user?.role === 'seller'})
+            res.send({isSeller: user?.role === 'seller'})
         })
-        
+        app.put('/seller', async(req, res) => {
+            const email = req.query.email;
+            const query = {email: email};
+           const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    status: 'Verified'
+                }
+            }
+            const result = await usersCollection.updateOne(query, updatedDoc, options);
+            const result2 = await productsCollection.updateMany(query, updatedDoc, options);
+            res.send(result2);
+        })
+
+      
+         
 
         app.delete('/users/:id', async(req,res)=>{
             const id= req.params.id
